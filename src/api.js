@@ -1,9 +1,13 @@
 // export * from './services/api.js'
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
-  withCredentials: true,
+await fetch("http://127.0.0.1:8000/api/login/", {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+    "X-CSRFToken": csrfToken,
+  },
+  body: JSON.stringify({
+    username,
+    password,
+  }),
 });
-
-export default api;
