@@ -12,7 +12,7 @@ import { UnauthorizedPage } from './pages/UnauthorizedPage'
 import { ProtectedRoute } from './routes/ProtectedRoute'
 
 const AppContent = () => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user} = useAuth()
 
   return (
     <div className="app-shell">
@@ -24,7 +24,7 @@ const AppContent = () => {
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<LoginPage />} />
             <Route
-              path="/manager"
+              path="/manager/dashboard"
               element={
                 <ProtectedRoute allowedRoles={['manager']}>
                   <ManagerDashboard />
@@ -32,7 +32,15 @@ const AppContent = () => {
               }
             />
             <Route
-              path="/staff"
+              path="/manager/requests"
+              element={
+                <ProtectedRoute allowedRoles={['manager']}>
+                  <ManagerDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/staff/tasks"
               element={
                 <ProtectedRoute allowedRoles={['staff']}>
                   <StaffDashboard />
@@ -40,7 +48,7 @@ const AppContent = () => {
               }
             />
             <Route
-              path="/resident"
+              path="/resident/create"
               element={
                 <ProtectedRoute allowedRoles={['resident']}>
                   <ResidentDashboard />
@@ -48,15 +56,33 @@ const AppContent = () => {
               }
             />
             <Route
-              path="/requests/:id"
+              path="/resident/requests"
               element={
-                <ProtectedRoute>
-                  <RequestDetail />
+                <ProtectedRoute allowedRoles={['resident']}>
+                  <ResidentDashboard />
                 </ProtectedRoute>
               }
             />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+           <Route
+  path="/"
+  element={
+    isAuthenticated ? (
+      <Navigate
+        to={
+          user?.role === 'manager'
+            ? '/manager/dashboard'
+            : user?.role === 'staff'
+            ? '/staff/tasks'
+            : '/resident/requests'
+        }
+        replace
+      />
+    ) : (
+      <Navigate to="/login" replace />
+    )
+  }
+/>
           </Routes>
         </main>
       </div>

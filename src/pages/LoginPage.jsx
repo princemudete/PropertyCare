@@ -5,18 +5,23 @@ import { AlertMessage } from '../components/AlertMessage'
 import { LoadingSpinner } from '../components/LoadingSpinner'
 
 export const LoginPage = () => {
-  const { signIn, isAuthenticated, allowedPath, loading, error } = useAuth()
+  const { signIn, isAuthenticated, allowedPath, loading, error, user } = useAuth()
   const [credentials, setCredentials] = useState({ username: '', password: '' })
   const [formError, setFormError] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(location.state?.from?.pathname || allowedPath, { replace: true })
+  if (isAuthenticated) {
+    if (user?.role === 'manager') {
+      navigate('/manager/dashboard')
+    } else if (user?.role === 'staff') {
+      navigate('/staff/tasks')
+    } else {
+      navigate('/resident/requests')
     }
-  }, [isAuthenticated, allowedPath, navigate, location.state])
-
+  }
+}, [isAuthenticated, user, navigate])
   const handleSubmit = async (event) => {
     event.preventDefault()
     setFormError('')

@@ -3,15 +3,15 @@ import { useAuth } from '../context/AuthContext'
 
 const linksByRole = {
   manager: [
-    { to: '/manager', label: 'Manager Dashboard' },
-    { to: '/manager', label: 'All Requests' },
+    { to: '/manager/dashboard', label: 'Manager Dashboard' },
+    { to: '/manager/requests', label: 'All Requests' },
   ],
   staff: [
-    { to: '/staff', label: 'My Tasks' },
+    { to: '/staff/tasks', label: 'My Tasks' },
   ],
   resident: [
-    { to: '/resident', label: 'Create Request' },
-    { to: '/resident', label: 'My Requests' },
+    { to: '/resident/create', label: 'Create Request' },
+    { to: '/resident/requests', label: 'My Requests' },
   ],
 }
 
